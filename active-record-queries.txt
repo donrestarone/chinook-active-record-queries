@@ -1,0 +1,47 @@
+checked the models in chinook to get the relevant active record table/models. 
+
+1. find the albums recorded by Queen:
+	find the artist_id of Queen -> Artist.find_by(name: 'Queen')
+	then, search the Album table-> Album.where(Artist_id: 51)
+
+2. count how many tracks belong to the media type "Protected MPEG-4 video file"
+	find the ID of MPEG-4-> SELECT * FROM media_types
+	then, to get the total number of tracks that have media_type_id 1-> Track.where(media_type_id: 1).count
+
+3. Find the genre with the name "Hip Hop/Rap".
+	Genre.where(name: "Hip Hop/Rap")
+
+4. Count how many tracks belong to the "Hip Hop/Rap" genre
+	Track.where(genre_id: 17).count
+
+5. Find the total amount of time required to listen to all the tracks in the database.
+	Track.count(:milliseconds)
+
+6. Find the highest price of any track that has the media type "MPEG audio file".
+	assign all the mpeg audio files to a variable-> all_mpeg = Track.where(media_type_id: 1)
+	then, use method maximum to see the highest priced one -> all_mpeg.maximum(:unit_price)
+
+this question reuses a variable from #6 
+7. Find the name of the most expensive track that has the media type "MPEG audio file".
+	assign the highest price to a variable -> most_expensive= all_mpeg.maximum(:unit_price)
+	then, pluck the names of all the expenive tracks -> Track.where(unit_price: most_expensive).pluck(:name)
+
+8. Find the 2 oldest artists. 
+	assign all the artists by ascending order to variable-> ascending_artists= Artist.order(created_at: :asc)
+	then, limit that variable to 2-> ascending_artists.limit(2)
+
+9. Find the least expensive track that has the genre "Electronica/Dance".
+	find the id of the genre -> Genre.where(name: "Electronica/Dance")
+	then, assign all the tracks that fall under that genre into a variable -> all_electronica= Track.where(genre_id: 15)
+	and order the tracks in that variable -> 
+	all_electronica.order(unit_price: :asc)
+
+10. Find all "MPEG autio file" tracks in the genre "Electronica/Dance".
+	find the ID of the type of media -> MediaType.where(name: "MPEG audio file")
+	then, assign all the mpeg tracks to all_mpeg -> all_mpeg= Track.where(media_type_id: 1)
+	also find the id of genre -> Genre.where(name: "Electronica/Dance")
+	pass the id to the method where -> 
+	all_mpeg.where(genre_id: 15)
+
+
+
